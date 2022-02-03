@@ -1,0 +1,15 @@
+def dichotomie(element,tableau):
+    n=len(tableau)
+    if n == 1:
+        return False
+    elif element == tableau[n//2]:
+        return True
+    elif element < tableau[n//2]:
+        print(tableau)
+        return dichotomie(element,tableau[0:n//2])
+    elif element > tableau[n//2]:
+        print(tableau)
+        return dichotomie(element,tableau[n//2:n])
+    
+print(dichotomie(102,[6,7,8,11,16,22,56,78,99,102]))
+            
