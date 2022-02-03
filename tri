@@ -1,0 +1,30 @@
+def fusion(T1,T2):
+    i1 = 0
+    i2 = 0
+    T = []
+    print(T1)
+    print(T2)
+    while i1 <len(T1) and i2 < len(T2):
+        if T1[i1] <= T2[i2]:
+            T.append(T1[i1])
+            T1.remove(T1[i1])
+            print("t1 : ",T1)
+            print("t : ",T)
+        else:
+            T.append(T2[i2])
+            T2.remove(T2[i2])
+            print("t2 : ",T2)
+            print("t : ",T)
+    return T
+
+def tri_fusion(T):
+    n = len(T)
+    if n == 1:
+        return T
+    T1 = tri_fusion(T[0:n//2])
+    T2 = tri_fusion(T[n//2:n])
+    return fusion(T1,T2)
+
+T1 = [1,6,7,5,9,12,18,111]
+T2 = [2,4,8,15,3,19,78,63]
+tri_fusion(fusion(T1,T2))
