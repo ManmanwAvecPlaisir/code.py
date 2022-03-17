@@ -1,0 +1,32 @@
+def liste_vers_matrice_adj(dico):
+    """
+    dico - dictionnaire tel que:
+                les clefs sont les numéros associés aux sommets d'un graphe (orienté ou non)
+                les valeurs sont un tableau des voisins (ou successeurs) du sommet
+    Sortie: list - tableau 2D représentant la matrice d'adjacence associée au graphe
+    """
+    list_m = []
+#     for keys,values in dico.items():
+    n = 1
+    while n != 0:
+        for i in range(5):
+            list = []
+            for j in range (5):
+                list.append(0)
+    #             print(list)
+            truc = dico[i]
+#             print(truc)
+            for k in range(len(truc)):
+                yes = truc[k]
+#                 print(yes)
+                no = list
+#                 print(no)
+                if no[yes] == 0:
+                    no[yes] = 1
+            list_m.append(list)
+        n -= 1
+    return list_m
+
+
+L1 = {0: [1, 2], 1: [0, 4], 2: [0, 3, 4], 3: [2, 4], 4: [1, 2, 3]}
+print(liste_vers_matrice_adj(L1))
