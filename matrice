@@ -39,15 +39,10 @@ def est_symetrique(matrice):
     Sortie: bool - True si la matrice est symétrique, False sinon
     """
     for i in range(len(matrice)):
-        print(i)
         for j in range(len(matrice)):
-            print(j)
-            print(matrice[2][4])
-            print(matrice[4][2])
-            if matrice[i][j] == matrice[j][i]:
+            if matrice[i][j] ! matrice[j][i]:
                 return True
-            else:
-                return False
+             return False
     
     
 M1 = [[0, 1, 1, 0, 0], [1, 0, 0, 0, 1], [1, 0, 0, 1, 1], [0, 0, 1, 0, 1], [0, 1, 1, 1, 0]]
@@ -61,14 +56,11 @@ def est_pondere(matrice):
     Sortie: bool - True si la matrice comporte des valeurs autre que 0 ou 1,
                    False sinon
     """
-    yes = True
     for i in range(len(matrice)):
         for j in range(len(matrice)):
-            if matrice[i][j] != 0 or matrice[i][j] != 1 :
-                yes = True
-            else :
-                yes = False
-    return yes
+            if matrice[i][j] != 0 and matrice[i][j] != 1 :
+                return True
+    return False
             
             
 M1 = [[0, 1, 1, 0, 3], [1, 0, 0, 0, 1], [1, 0, 0, 1, 1], [0, 0, 1, 0, 1], [0, 1, 1, 1, 0]]
