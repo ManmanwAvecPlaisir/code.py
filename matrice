@@ -30,3 +30,47 @@ def liste_vers_matrice_adj(dico):
 
 L1 = {0: [1, 2], 1: [0, 4], 2: [0, 3, 4], 3: [2, 4], 4: [1, 2, 3]}
 print(liste_vers_matrice_adj(L1))
+
+
+
+def est_symetrique(matrice):
+    """
+    matrice - list, tableau 2D d'entiers représentant une matrice carrée
+    Sortie: bool - True si la matrice est symétrique, False sinon
+    """
+    for i in range(len(matrice)):
+        print(i)
+        for j in range(len(matrice)):
+            print(j)
+            print(matrice[2][4])
+            print(matrice[4][2])
+            if matrice[i][j] == matrice[j][i]:
+                return True
+            else:
+                return False
+    
+    
+M1 = [[0, 1, 1, 0, 0], [1, 0, 0, 0, 1], [1, 0, 0, 1, 1], [0, 0, 1, 0, 1], [0, 1, 1, 1, 0]]
+M2 = [[0, 1, 1, 0, 0], [0, 0, 1, 0, 1], [1, 0, 0, 0, 1], [1, 0, 1, 0, 1], [0, 1, 1, 1, 0]]
+# print(est_symetrique(M2))
+
+
+def est_pondere(matrice):
+    """
+    matrice - list, tableau 2D d'entiers représentant une matrice carrée
+    Sortie: bool - True si la matrice comporte des valeurs autre que 0 ou 1,
+                   False sinon
+    """
+    yes = True
+    for i in range(len(matrice)):
+        for j in range(len(matrice)):
+            if matrice[i][j] != 0 or matrice[i][j] != 1 :
+                yes = True
+            else :
+                yes = False
+    return yes
+            
+            
+M1 = [[0, 1, 1, 0, 3], [1, 0, 0, 0, 1], [1, 0, 0, 1, 1], [0, 0, 1, 0, 1], [0, 1, 1, 1, 0]]
+M3 = [[0, 0, 3, 1, 0], [0, 0, 4, 2, 1], [3, 4, 0, 6, 0], [1, 2, 6, 0, 5], [0, 1, 0, 5, 0]]
+print(est_pondere(M2))
