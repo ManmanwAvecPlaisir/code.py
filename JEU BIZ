@@ -1,0 +1,62 @@
+x = 10
+y = 50
+import os
+os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (x,y)
+import pygame
+
+pygame.init()
+
+ecran = pygame.display.set_mode((640, 480))
+bg = pygame.image.load("background.jpg")
+
+perso = pygame.image.load("perso.png").convert_alpha()
+rectElement1 = perso.get_rect()
+balle = pygame.image.load("balle.png").convert_alpha()
+rectElement2 = balle.get_rect()
+nombre_image_seconde = 35
+continuer = True
+x = 200
+y = 200
+x_balle = 100
+y_balle = 100
+while continuer:
+#     print(x,y)
+#     print(x_balle,y_balle)
+    ecran.blit(bg,(0,0))
+    pygame.time.Clock().tick(nombre_image_seconde)
+    ecran.blit(perso,(x,y))
+    ecran.blit(balle,(x_balle,y_balle))
+    
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            continuer = False
+            pygame.quit()
+                  
+        if x == x_balle and y == y_balle:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    x = x - 25
+                    x_balle = x_balle - 25
+                if event.key == pygame.K_RIGHT:
+                    x = x + 25
+                    x_balle = x_balle + 25
+                if event.key == pygame.K_UP:
+                    y = y - 25
+                    y_balle = y_balle - 25
+                if event.key == pygame.K_DOWN:
+                    y = y + 25
+                    y_balle = y_balle + 25
+                if event.key == pygame.K_SPACE:
+                    x_balle = x_balle + 200
+        else :
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    x = x - 25
+                if event.key == pygame.K_RIGHT:
+                    x = x + 25
+                if event.key == pygame.K_UP:
+                    y = y - 25
+                if event.key == pygame.K_DOWN:
+                    y = y + 25
+    pygame.display.flip()
+
