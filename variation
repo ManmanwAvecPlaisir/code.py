@@ -1,0 +1,27 @@
+import numpy
+temp = 0
+min = 0
+min2 = 0
+moyenne = 0
+somme = 0
+variation =0
+annee = numpy.empty((20,12))
+
+for j in range(1,20):
+    print(" ")
+    print("Année ",j)
+    for i in range (12):
+        print("Mois ",i+1)
+        temp = int(input("entrez votre température : "))
+        min = temp
+        annee[j][i] = temp
+        if temp < min:
+            min = temp
+        somme += temp
+        variation = abs(temp - (annee[j][i-1]))
+        
+        print(variation)
+    moyenne = somme/12
+    print("la temperature minimale de cette est de ",min,"°")
+    print("la moyenne des température pour cette année est de ",moyenne,"°")
+print(annee)
