@@ -1,0 +1,87 @@
+x = 10
+y = 50
+import os
+os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (x,y)
+import pygame
+
+pygame.init()
+
+x = 0
+y = 0
+
+dbx = 5
+dby = 5
+
+score = 0
+
+ecran = pygame.display.set_mode((640, 480))
+
+bg = pygame.image.load("background.jpg")
+rectElement_fond = bg.get_rect()
+
+perso = pygame.image.load("perso.png").convert_alpha()
+rectElement1 = perso.get_rect()
+rectElement1.x = (640-100)/2
+rectElement1.y = (480-100)/2
+
+balle = pygame.image.load("balle.png").convert_alpha()
+rectElement2 = balle.get_rect()
+
+font = pygame.font.Font(None, 20)
+
+nombre_image_seconde = 25
+
+masqueElement1 = pygame.mask.from_surface(bg)
+masqueElement2 = pygame.mask.from_surface(perso)
+
+continuer = True
+while continuer:
+    Image_du_texte = font.render(str(int(score/25)), True, (222, 0, 0))
+    pygame.time.Clock().tick(nombre_image_seconde)
+    ecran.blit(bg,rectElement_fond)
+    pygame.draw.rect(ecran, (0,0,0), pygame.Rect(295, 35, 60, 40))
+    pygame.draw.rect(ecran, (255,255,255), pygame.Rect(300, 40, 50, 30))
+    ecran.blit(Image_du_texte, (320,50))
+    ecran.blit(perso,rectElement1)
+    ecran.blit(balle,rectElement2)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            continuer = False
+            pygame.quit()
+        #deplacement
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                rectElement1.x -= 25
+            if event.key == pygame.K_RIGHT:
+                rectElement1.x += 25
+            if event.key == pygame.K_UP:
+                rectElement1.y -= 25
+            if event.key == pygame.K_DOWN:
+                rectElement1.y += 25
+    #bordure
+    if rectElement1.x < 0:
+        rectElement1.x = 0
+    if rectElement1.x > 640-100:
+        rectElement1.x = 540
+    if rectElement1.y < 0:
+        rectElement1.y = 0
+    if rectElement1.y > 480-100:
+        rectElement1.y = 380
+    
+    #mvt
+    rectElement2.x = rectElement2.x + dbx
+    rectElement2.y = rectElement2.y + dby
+    if rectElement2.x < 0 or rectElement2.x > 640-40:
+        dbx = -1*dbx
+        dbx = dbx *1.15
+    if rectElement2.y < 0 or rectElement2.y > 480-40:
+        dby = -1*dby
+        dby = dby *1.15
+        
+    #collision
+    if rectElement1.colliderect(rectElement2):
+        print("mort")
+        break
+    
+    score += 1
+    pygame.display.flip()
