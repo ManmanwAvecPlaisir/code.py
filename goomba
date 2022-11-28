@@ -14,7 +14,9 @@ dby = random.randint(5,10)
 
 hit = pygame.mixer.Sound("touché.mp3")
 defaite = pygame.mixer.Sound("lose.mp3")
+
 d_perso = 30
+
 #pour niveau 2
 dbx_2 = random.randint(5,10)
 dby_2 = random.randint(5,10)
@@ -66,23 +68,27 @@ test_collision = 0
 vie = 3
 vie_sup = pygame.image.load("vie_sup1.png").convert_alpha()
 rectElement_vie = vie_sup.get_rect()
-print(rectElement_vie)
-print(rectElement1)
-# vie_sup_taille = ecran.blit(pygame.transform.scale(vie_sup, (30, 30)), (130, 10))
 etoile = pygame.image.load("etoile.png").convert_alpha()
 rectElement_etoile = etoile.get_rect()
+
 #apparition vie
 spawn_vie_x = random.randint(10,590)
 spawn_vie_y = random.randint(10,430)
 rectElement_vie.x = spawn_vie_x
 rectElement_vie.y = spawn_vie_y
 recup_vie = 0
+
 #apparition etoile
 spawn_etoile_x = random.randint(10,590)
 spawn_etoile_y = random.randint(10,430)
 rectElement_etoile.x = spawn_etoile_x
 rectElement_etoile.y = spawn_etoile_y
+print(rectElement_etoile)
+
 # recup_etoile
+recup_etoile = 0
+invincible = 0
+
 niveau = 0
 
 font_accueil = pygame.font.SysFont(None, 35)
@@ -272,10 +278,21 @@ while continuer:
         if rectElement1.colliderect(rectElement3):
             continuer = False
             
-            
+    #niveau avec etoile et vie 1up
     if niveau == 5:
         
         if rectElement1.colliderect(rectElement2) and test_collision == 0:
+            if invincible == 1:
+                rectElement2.x = rectElement2.x + dbx
+                rectElement2.y = rectElement2.y + dby
+                if rectElement2.x < rectElement1.x or rectElement2.x > rectElement1.x:
+                    dbx = -1*dbx
+                    dbx = dbx *vitesse
+                if rectElement2.y < rectElement1.y or rectElement2.y > rectElement1.y:
+                    dby = -1*dby
+                    dby = dby *vitesse
+                vie+= 1
+            
             vie -= 1
             test_collision = 1
         else:
@@ -283,8 +300,8 @@ while continuer:
                 test_collision = 0
         if recup_vie == 0:
             vie_sup_taille = ecran.blit(pygame.transform.scale(vie_sup, (40, 40)), rectElement_vie)
-#         if recup_etoile == 0:
-#             etoile_taille = ecran.blit(pygame.transform.scale(etoile, (40, 40)), rectElement_etoile)
+        if recup_etoile == 0:
+            etoile_taille = ecran.blit(pygame.transform.scale(etoile, (40, 40)), rectElement_etoile)
         if rectElement1.colliderect(rectElement_vie) and vie!=3  and vie >0:
             if vie == 2 and recup_vie == 0:
                 c1 = ecran.blit(pygame.transform.scale(coeur1, (50, 50)), (10, 10))
@@ -299,7 +316,11 @@ while continuer:
                 vie+=1
                 recup_vie = 1
                 ecran.blit(bg,rectElement_fond)
-#         if rectElement1.colliderect(rectElement_etoile):
+        if rectElement1.colliderect(rectElement_etoile):
+            if recup_etoile == 0:
+                recup_etoile = 1
+                invincible = 1
+                ecran.blit(bg,rectElement_fond)
             
             
     score = score + 1
@@ -308,5 +329,3 @@ while continuer:
 pygame.time.wait(3000)    
 pygame.quit()
 exit()
-
-
