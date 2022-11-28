@@ -1,0 +1,303 @@
+x = 10
+y = 50
+import os
+os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (x,y)
+import pygame
+import random
+pygame.init()
+
+x = 0
+y = 0
+
+dbx = random.randint(5,10)
+dby = random.randint(5,10)
+
+d_perso = 30
+#pour niveau 2
+dbx_2 = random.randint(5,10)
+dby_2 = random.randint(5,10)
+dbx_3 = random.randint(5,10)
+dby_3 = random.randint(5,10)
+
+score = 0
+
+ecran = pygame.display.set_mode((640, 480))
+
+bg = pygame.image.load("background.jpg")
+rectElement_fond = bg.get_rect()
+
+#perso
+perso = pygame.image.load("perso.png").convert_alpha()
+rectElement1 = perso.get_rect()
+rectElement1.x = (640-100)/2
+rectElement1.y = (480-100)/2
+
+#balles
+balle = pygame.image.load("balle.png").convert_alpha()
+rectElement2 = balle.get_rect()
+balle_2 = pygame.image.load("balle.png").convert_alpha()
+rectElement3 = balle_2.get_rect()
+balle_3 = pygame.image.load("balle.png").convert_alpha()
+rectElement4 = balle_3.get_rect()
+balle_4 = pygame.image.load("balle.png").convert_alpha()
+rectElement5 = balle_4.get_rect()
+balle_5 = pygame.image.load("balle.png").convert_alpha()
+rectElement6 = balle_5.get_rect()
+
+rebond = 0
+
+#Vies
+coeur1 = pygame.image.load("coeur.png").convert_alpha()
+rectElement4 = coeur1.get_rect()
+coeur2 = pygame.image.load("coeur.png").convert_alpha()
+rectElement5 = coeur2.get_rect()
+coeur3 = pygame.image.load("coeur.png").convert_alpha()
+rectElement6 = coeur3.get_rect()
+
+font = pygame.font.Font(None, 20)
+
+nombre_image_seconde = 25
+
+test_collision = 0
+
+#Niveau avec Bonus 
+vie = 3
+vie_sup = pygame.image.load("vie_sup1.png").convert_alpha()
+rectElement_vie = vie_sup.get_rect()
+print(rectElement_vie)
+print(rectElement1)
+# vie_sup_taille = ecran.blit(pygame.transform.scale(vie_sup, (30, 30)), (130, 10))
+etoile = pygame.image.load("etoile.png").convert_alpha()
+rectElement_etoile = etoile.get_rect()
+#apparition vie
+spawn_vie_x = random.randint(10,590)
+spawn_vie_y = random.randint(10,430)
+rectElement_vie.x = spawn_vie_x
+rectElement_vie.y = spawn_vie_y
+recup_vie = 0
+#apparition etoile
+spawn_etoile_x = random.randint(10,590)
+spawn_etoile_y = random.randint(10,430)
+rectElement_etoile.x = spawn_etoile_x
+rectElement_etoile.y = spawn_etoile_y
+# recup_etoile
+niveau = 0
+
+font_accueil = pygame.font.SysFont(None, 35)
+font_accueil2 = pygame.font.SysFont(None, 100)
+texte = ""
+taper = True
+
+continuer = True
+while continuer:
+    for event in pygame.event.get():
+#         if event.type == pygame.QUIT:
+#             continuer = False
+        if event.type == pygame.KEYDOWN and taper:
+            #touche entrer
+            if event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER :
+                taper = False
+                continuer = False
+            #pour effacer
+            elif event.key == pygame.K_BACKSPACE:
+                texte =  texte[:-1]
+            #pour écrire
+            else:
+                texte += event.unicode
+        #choix du niveau
+        if texte == "1":
+            niveau = 1
+        if texte == "2":
+            niveau = 2
+        if texte == "3":
+            niveau = 3
+        if texte == "4":
+            niveau = 4
+        if texte == "5":
+            niveau = 5
+        ecran.blit(bg,rectElement_fond)
+        pygame.draw.rect(ecran, (0,0,0), pygame.Rect(20, 15, 600, 440))
+        pygame.draw.rect(ecran, (255,255,255), pygame.Rect(35, 30, 570, 410))
+        pygame.draw.rect(ecran, (0,0,0), pygame.Rect(275, 340, 85, 75))
+        text_accueil = font_accueil.render("Menu :", True, (255, 0, 0))
+        text_accueil2 = font_accueil.render(" Taper 1, 2, 3, 4 ou 5 ", True, (255, 0, 0))
+        text_niveau1 = font_accueil.render("Niveau 1 : Vitesse croissante", True, (255, 0, 0))
+        text_niveau2 = font_accueil.render("Niveau 2 : Double Danger", True, (255, 0, 0))
+        text_niveau3 = font_accueil.render("Niveau 3 : Vous possedez 3 vies", True, (255, 0, 0))
+        text_niveau4 = font_accueil.render("Niveau 4 : Clonage", True, (255, 0, 0))
+        text_niveau5 = font_accueil.render("Niveau 5 : Niveau avec bonus", True, (255, 0, 0))
+        choix = font_accueil2.render(texte, True, (255, 0, 0))
+        ecran.blit(text_accueil, (285,50))
+        ecran.blit(text_niveau1, (75,85))
+        ecran.blit(text_niveau2, (75,125))
+        ecran.blit(text_niveau3, (75,165))
+        ecran.blit(text_niveau4, (75,205))
+        ecran.blit(text_niveau5, (75,245))
+        ecran.blit(choix, (300,350))
+        ecran.blit(text_accueil2, (205,300))
+        pygame.display.flip()
+
+pygame.time.wait(1000)
+
+continuer = True
+while continuer:
+    if niveau == 1 or niveau == 3 or niveau == 5:
+        vitesse = 1.05
+    Image_du_texte = font.render(str(int(score/25)), True, (222, 0, 0))
+    pygame.time.Clock().tick(nombre_image_seconde)
+    ecran.blit(bg,rectElement_fond)
+    pygame.draw.rect(ecran, (0,0,0), pygame.Rect(295, 35, 60, 40))
+    pygame.draw.rect(ecran, (255,255,255), pygame.Rect(300, 40, 50, 30))
+    ecran.blit(Image_du_texte, (320,50))
+    ecran.blit(perso,rectElement1)
+    ecran.blit(balle,rectElement2)
+    
+    if niveau == 2:
+        vitesse = 1.05
+        ecran.blit(balle_2,rectElement3)
+        
+    if niveau == 3 or niveau == 5:
+        if vie == 3:
+            c1 = ecran.blit(pygame.transform.scale(coeur1, (50, 50)), (10, 10))
+            c2 = ecran.blit(pygame.transform.scale(coeur2, (50, 50)), (70, 10))
+            c3 = ecran.blit(pygame.transform.scale(coeur3, (50, 50)), (130, 10))
+        if vie == 2:
+            c1 = ecran.blit(pygame.transform.scale(coeur1, (50, 50)), (10, 10))
+            c2 = ecran.blit(pygame.transform.scale(coeur2, (50, 50)), (70, 10))
+        if vie == 1:
+            c1 = ecran.blit(pygame.transform.scale(coeur1, (50, 50)), (10, 10))
+        if vie == 0:
+            None
+        
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            continuer = False
+        #deplacement
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                rectElement1.x -= d_perso
+            if event.key == pygame.K_RIGHT:
+                rectElement1.x += d_perso
+            if event.key == pygame.K_UP:
+                rectElement1.y -= d_perso
+            if event.key == pygame.K_DOWN:
+                rectElement1.y += d_perso
+                
+    #bordure perso
+    if rectElement1.x < 0:
+        rectElement1.x = 0
+    if rectElement1.x > 640-100:
+        rectElement1.x = 540
+    if rectElement1.y < 0:
+        rectElement1.y = 0
+    if rectElement1.y > 480-100:
+        rectElement1.y = 380
+    
+    #mvt balle 1
+    rectElement2.x = rectElement2.x + dbx
+    rectElement2.y = rectElement2.y + dby
+    if rectElement2.x < 0 or rectElement2.x > 640-40:
+        dbx = -1*dbx
+        dbx = dbx *vitesse
+        rebond += 1
+    if rectElement2.y < 0 or rectElement2.y > 480-40:
+        dby = -1*dby
+        dby = dby *vitesse
+        rebond += 1
+    
+    if niveau == 1 or niveau == 2 or niveau == 4 or vie == 0:
+    #collision (balle1)
+        if rectElement1.colliderect(rectElement2):
+            continuer = False
+
+
+    #niveau 2 (2 balle)
+    #mvt
+    if niveau == 2:
+        vitesse = 1.05
+        rectElement3.x = rectElement3.x + dbx_2
+        rectElement3.y = rectElement3.y + dby_2
+        if rectElement3.x < 0 or rectElement3.x > 640-40:
+            dbx_2 = -1*dbx_2
+            dbx_2 = dbx_2 *vitesse
+        if rectElement3.y < 0 or rectElement3.y > 480-40:
+            dby_2 = -1*dby_2
+            dby_2 = dby_2 *vitesse
+            
+        #collision (balle2)
+        if rectElement1.colliderect(rectElement3):
+            continuer = False
+        
+        
+    #niveau 3
+    if niveau == 3:
+        if rectElement1.colliderect(rectElement2) and test_collision == 0:
+            vie -= 1
+            test_collision = 1
+        else:
+            if rectElement1.colliderect(rectElement2) == False:
+                test_collision = 0
+    
+    
+    #niveau 4
+    if niveau == 4:
+        vitesse = 1
+        if rebond >= 5:
+            ecran.blit(balle_2,rectElement3)
+            rectElement3.x = rectElement3.x + dbx_2
+            rectElement3.y = rectElement3.y + dby_2
+            if rectElement3.x < 0 or rectElement3.x > 640-40:
+                dbx_2 = -1*dbx_2
+                dbx_2 = dbx_2 *vitesse
+            if rectElement3.y < 0 or rectElement3.y > 480-40:
+                dby_2 = -1*dby_2
+                dby_2 = dby_2 *vitesse
+        if rebond >= 10:
+            ecran.blit(balle_3,rectElement4)
+            rectElement4.x = rectElement4.x + dbx_3
+            rectElement4.y = rectElement4.y + dby_3
+            if rectElement4.x < 0 or rectElement4.x > 640-40:
+                dbx_3 = -1*dbx_3
+                dbx_3 = dbx_3 *vitesse
+            if rectElement4.y < 0 or rectElement4.y > 480-40:
+                dby_3 = -1*dby_3
+                dby_3 = dby_3 *vitesse
+        if rectElement1.colliderect(rectElement3):
+            continuer = False
+            
+            
+    if niveau == 5:
+        
+        if rectElement1.colliderect(rectElement2) and test_collision == 0:
+            vie -= 1
+            test_collision = 1
+        else:
+            if rectElement1.colliderect(rectElement2) == False:
+                test_collision = 0
+        if recup_vie == 0:
+            vie_sup_taille = ecran.blit(pygame.transform.scale(vie_sup, (40, 40)), rectElement_vie)
+#         if recup_etoile == 0:
+#             etoile_taille = ecran.blit(pygame.transform.scale(etoile, (40, 40)), rectElement_etoile)
+        if rectElement1.colliderect(rectElement_vie) and vie!=3  and vie >0:
+            if vie == 2 and recup_vie == 0:
+                c1 = ecran.blit(pygame.transform.scale(coeur1, (50, 50)), (10, 10))
+                c2 = ecran.blit(pygame.transform.scale(coeur2, (50, 50)), (70, 10))
+                c3 = ecran.blit(pygame.transform.scale(coeur3, (50, 50)), (130, 10))
+                vie += 1
+                recup_vie = 1
+                ecran.blit(bg,rectElement_fond)
+            if vie == 1 and recup_vie == 0:
+                c1 = ecran.blit(pygame.transform.scale(coeur1, (50, 50)), (10, 10))
+                c2 = ecran.blit(pygame.transform.scale(coeur2, (50, 50)), (70, 10))
+                vie+=1
+                recup_vie = 1
+                ecran.blit(bg,rectElement_fond)
+#         if rectElement1.colliderect(rectElement_etoile):
+            
+            
+    score = score + 1
+    pygame.display.flip()
+    
+pygame.time.wait(3000)    
+pygame.quit()
+exit()
